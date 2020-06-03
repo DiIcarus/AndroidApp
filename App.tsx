@@ -38,8 +38,7 @@ export default class App extends Component {
   <Stack.Navigator>
     <Stack.Screen name={screen__.HomeScreen} component={HomeScreen} />
     <Stack.Screen name={screen__.SignInScreen} component={SignInScreen}/>
-    <Stack.Screen name={screen__.LoadingScreen} component={LoadingScreen}
-    />
+    <Stack.Screen name={screen__.LoadingScreen} component={LoadingScreen}/>
     <Stack.Screen name={screen__.RegisterScreen} component={RegisterScreen}/>
     <Stack.Screen name={screen__.MainFeature} component={MainFeature}/>
     <Stack.Screen name={screen__.DetailNote} component={DetailNote}/>
@@ -52,10 +51,8 @@ export default class App extends Component {
   render(){
     return (
       <NavigationContainer>
-        
         {this.renderScreen()}
       </NavigationContainer>
-    
   );
   }
 }

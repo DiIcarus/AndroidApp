@@ -32,7 +32,6 @@ export default class DetailNote extends Component<Props,{}>{
             <CardItem>
               <Body style={styles.container}>
                 <Image source={{uri: 'https://scontent.fvca1-2.fna.fbcdn.net/v/t1.0-0/p180x540/87492666_1116009912078185_6418781409296515072_o.jpg?_nc_cat=101&_nc_sid=dd9801&_nc_ohc=ZHO73CyOL0oAX_bMJ6r&_nc_ht=scontent.fvca1-2.fna&_nc_tp=6&oh=4df76e83c50218aed000863bd70f1370&oe=5EF7488E'}} style={{height: 300, width:500, flex: 1}}/>
-                
                 <Text>
                   Note Header is a free and open source framework that enable
                   developers to build
