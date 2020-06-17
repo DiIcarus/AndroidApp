@@ -7,42 +7,44 @@ import * as screen__ from './../../config';
 interface Props {
   navigation:any
 }
-const image = { uri: "https://reactjs.org/logo-og.png" };
-
+const image = { uri: "https://wallpaperaccess.com/full/797185.png"};
+// const image_button = {uri: }
 export default class HomeScreen extends Component<Props,{}>{
   componentDidMount(){
-    // (()=>{this.props.navigation.navigate('SignInScreen')})()
+    console.log("muont")
+    fetch('http://192.168.1.7:5001/list',{method:"GET"})
+    .then((res:any)=>{console.log("AAAA",res.json())})
+    .catch((err:any)=>{console.log("ERR",err)})
   }
+  
   render(){
     return (
-      <Container style={styles.aligntCenter}>
-        {/* <StatusBar hidden={true}/> */}
-        {/* <View style={styles.container}>
-          <StatusBar hidden={true}/>
+      <Container style={styles.container}>
+        <View style={styles.container}>
           <ImageBackground source={image} style={styles.image}>
+            <Text style={styles.text}>TODO APP</Text>
+            <Button
+              style={styles.aligntCenter} 
+              onPress={() => screen__.goTo(this.props.navigation,screen__.SignInScreen)}
+              // large
+              rounded
+              dark
+            >
+              <Icon style={styles.button_text} name='person' />
+              <Text style={styles.button_text}> Sign In</Text>
+            </Button>
+            <Button
+              style={styles.aligntCenter}
+              dark
+              // large
+              rounded
+              bordered
+              onPress={() => screen__.goTo(this.props.navigation,screen__.RegisterScreen)}
+            ><Icon style={styles.button_text} name='add' />
+              <Text style={styles.button_text}>Register</Text>
+            </Button>
           </ImageBackground>
-        </View> */}
-        
-        <Button
-          style={styles.aligntCenter} 
-          onPress={() => screen__.goTo(this.props.navigation,screen__.SignInScreen)}
-          large
-          dark
-          // block
-        ><Icon name='person' />
-          <Text> Sign In</Text>
-        </Button>
-        <Button
-          style={styles.aligntCenter} 
-          // block
-          transparent
-          large
-          light
-          dark
-          onPress={() => screen__.goTo(this.props.navigation,screen__.RegisterScreen)}
-        ><Icon name='add' />
-          <Text >Register</Text>
-        </Button>
+        </View>
       </Container>
   );
   }
@@ -52,18 +54,31 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     alignItems:"center",
     display:"flex",
+    height:100,
+    width:300,
+    marginTop: 10,
   },
   image:{
     flex: 1,
     resizeMode: "cover",
-    justifyContent: "center"
+    justifyContent: "center",
+    alignItems:"center",
   },
   text: {
-    color: "grey",
-    fontSize: 30,
-    fontWeight: "bold"
-  },container: {
-    flex: 1,
-    flexDirection: "column"
+    top:0,
+    color: "white",
+    fontSize: 50,
+    fontWeight: "bold",
+    marginTop:0,
+    marginBottom:50,
+    fontFamily: "Time-New_Roman"
   },
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    width:"100%",
+  },
+  button_text:{
+    fontSize:20,
+  }
 })

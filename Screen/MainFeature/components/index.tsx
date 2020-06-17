@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View,StatusBar} from 'react-native';
+import { StyleSheet, Text, View,StatusBar, ImageBackground} from 'react-native';
 import { Image } from 'react-native';
 import { Container, Header, Content, Form, Item, Input, Label, Button,Icon,Fab,ActionSheet} from 'native-base';
 import FooterBar from './../../Fixed/components/footerBar';
 import HeaderBar from './../../Fixed/components/headerBar';
-import HomeContent from './content';
+import MainContent from './mainContent';
 import CardItemBordered from './../../Card/components/index';
-import FABExample from './../../Multiple/components/index';
 import * as screen__ from './../../config';
+import Expo from 'expo';
+import { Ionicons } from '@expo/vector-icons';
 interface Props {
   navigation:any
 }
@@ -27,63 +28,111 @@ const initState = {
   active: false,
   clicked:{}
 }
+const image = { uri: "https://wallpaperaccess.com/full/797185.png"};
 export default class MainFeature extends Component<Props,State>{
+  
   state=initState
-  componentDidMount(){
-    // (()=>screen__.goTo(this.props.navigation,screen__.CardItemBordered))()
+
+  async componentWillMount() {
+    await Expo.Font.loadAsync({
+    Roboto: require("native-base/Fonts/Roboto.ttf"),
+    Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+    ...Ionicons.font,
+    });
+  }
+  componentDidUpdate(){
   }
   setActive = () =>{
-
     this.setState({
       active:!this.state.active
     })
-    screen__.goTo(this.props.navigation,screen__.AddNote)
-    
+    // screen__.goTo(this.props.navigation,screen__.AddNote)
   }
   render(){
     return (
-      <Container>
-        {/* <View> */}
-        {/* <FABExample navigation/> */}
-       
-        <View style={{ flex: 1 }}> 
-          <HomeContent navigation={this.props.navigation}/>
-          <Fab
-            active={this.state.active}
-            direction="up"
-            containerStyle={{ }}
-            style={{ backgroundColor: '#5067FF'}}
-            position="bottomRight"
-            onPress={this.setActive}
-            // onPress={() =>
-            // ActionSheet.show(
-            //   {
-            //     options: BUTTONS,
-            //     cancelButtonIndex: CANCEL_INDEX,
-            //     destructiveButtonIndex: DESTRUCTIVE_INDEX,
-            //     title: "Testing ActionSheet"
-            //   },
-            //   (buttonIndex:any) => {
-            //     this.setState({ clicked: BUTTONS[buttonIndex] });
-            //   }
-            // )}
-          >
-            <Icon name="add" />
-            {/* <Button style={{ backgroundColor: '#34A34F' }}>
-              <Icon name="note" />
-            </Button>
-            <Button style={{ backgroundColor: '#3B5998' }}>
-              <Icon name="logo-facebook" />
-            </Button>
-            <Button disabled style={{ backgroundColor: '#DD5144' }}>
-              <Icon name="mail" />
-            </Button> */}
-          </Fab>
+      <Container style={styles.container}>
+        <HeaderBar navigation={this.props.navigation}/>
+        <View style={styles.container}> 
+          <ImageBackground source={image} style={styles.image}>
+            <MainContent navigation={this.props.navigation}/>
+            <Fab
+              active={this.state.active}
+              direction="up"
+              style={{ 
+                backgroundColor: '#000230',
+                borderColor:'white',
+                borderWidth:2,
+            }}
+              position="bottomRight"
+              onPress={this.setActive}
+            >
+              <Icon name="add" />
+              <Button style={styles.fab_button} onPress={()=>screen__.goTo(this.props.navigation,screen__.AddGroup)}>
+                {/* group */}
+                <Icon name="ios-folder" />
+              </Button>
+              <Button style={styles.fab_button} onPress={()=>screen__.goTo(this.props.navigation,screen__.AddList)}>
+                {/* list */}
+                <Icon name="ios-list" />
+              </Button>
+              <Button style={styles.fab_button} onPress={()=>screen__.goTo(this.props.navigation,screen__.AddNote)}>
+                {/* task */}
+                <Icon name="ios-bookmark" />
+              </Button>
+            </Fab>
+          </ImageBackground>
+          
         </View>
-        {/* </View> */}
       </Container>
     );
   }
-}        {/* <FooterBar navigation/> */}
-        {/* <Header></Header> */}
-        {/* <StatusBar hidden={true}/> */}
+}
+
+const styles = StyleSheet.create({
+  aligntCenter:{
+    justifyContent:"center",
+    alignItems:"center",
+  },
+  image:{
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    alignItems:"center",
+  },
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    width:"100%",
+  },
+  input:{
+    color:"white",
+    fontSize:15,
+    width:300,
+  },
+  form:{
+    width:300,
+    justifyContent:"center",
+    alignItems:"center",
+  },
+  button:{
+    marginTop:30,
+    // borderWidth:10,
+  },
+  text:{
+    color:"white",
+    fontSize:15,
+    alignSelf:"center",
+  },
+  text_button:{
+    fontSize:20,
+  },
+  item_input:{
+    width:300,
+    justifyContent:"center",
+    alignItems:"center",
+  },
+  fab_button:{
+    // width:150
+    backgroundColor:"#F0B67B"
+  }
+})

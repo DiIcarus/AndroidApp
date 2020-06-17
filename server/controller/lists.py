@@ -5,10 +5,17 @@ from flask_jwt_extended import (
 from utils.dbHelper import dbSupport as db__
 import __variable__ as v__
 import json
-
+type = v__.LISTS
+def receive_request_data():
+  list_name = request.form["list_name"]
+  list_group = request.form["list_status"]
+  id_group = request.form["id_group"]
+  return (list_name,list_group,id_group)
 def get_all():
-  rows = db__.selectTableAll(v__.LISTS)
+  rows = db__.selectTableAll(type)
   arr = []
+  if rows == False:
+    return "Get "+type+" Fail!!",500
   for row in rows:
     arr.append({
       "ID":row[0],
@@ -18,15 +25,27 @@ def get_all():
     })
   return {"data":arr}
 
+
+#######################################
 def insert():
-  # y = request.form["username"]
-  print(request.form) #form data
-  print(request.files)
-  return "OK"
+  value = receive_request_data()
+  is_success = db__.insertTable(type,value)
+  if is_success:
+    return "Insert "+type+" Successful!!",200
+  else:
+    return "Insert "+type+" Fail !!",500
 
 def update(id):
-  db__.updateTableById(id,v__.LISTS)
-  return request.data
+  value = receive_request_data()
+  is_success = db__.updateTableById(id,type,value)
+  if is_success:
+    return "Update "+type+" Successful!!",200
+  else:
+    return "Update "+type+" Fail !!",500
 
 def delete(id):
-  return {"value":db__.deleteTableById(id,v__.LISTS)}
+  is_success = db__.deleteTableById(id,type)
+  if is_success:
+    return "Delete "+type+" Successful!!",200
+  else:
+    return "Delete "+type+" Fail !!",500

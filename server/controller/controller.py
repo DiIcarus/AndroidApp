@@ -12,7 +12,7 @@ def route(app):
   
   @app.route("/user/register",methods=['POST'])
   def register():
-    return users.register()
+    return users.register_user()
   
   @app.route("/user/<string:id>",methods=['GET'])
   def get_pro_file(id):

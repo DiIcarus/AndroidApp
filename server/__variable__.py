@@ -10,6 +10,6 @@ CONNSTRING = "Driver={"+DRIVERNAME+"};Server="+SERVERNAME+";Database="+DATABASE+
 
 GROUPS = 'groups'
 LISTS = 'lists'
-SMART_LISTS = 'smart_lists'
+SMART_LISTS = 'smart_list'
 TASKS = 'tasks'
 USERS = 'users'

@@ -1,36 +1,65 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View,StatusBar,Image, TextInputChangeEventData, NativeSyntheticEvent} from 'react-native';
-import { Container, Header, Content, Form, Item, Input, Label, Button, Toast,ListItem,Textarea,DatePicker } from 'native-base';
+import { StyleSheet,ImageBackground, Text, View,StatusBar,Image, TextInputChangeEventData, NativeSyntheticEvent} from 'react-native';
+import { Container,Picker, Header, Content, Form, Item, Input, Label, Button, Toast,ListItem,Textarea,DatePicker } from 'native-base';
 import * as screen__ from '../../config';
 import { Link, } from '@react-navigation/native';
+import { white } from 'react-native-paper/lib/typescript/src/styles/colors';
+import fetchAPI from './../../../modules/fetchAPI';
+import axios from 'axios'
 interface Props {
   navigation:any
 }
 type State = typeof initState;
 const initState = {
-  id:"Sa",
-  pws:"123",
-  id_input:"",
-  pws_input:"",
-  text:"",
+  name:"",
+  time_start:"",
+  date_start:"",
+  time_end:"",
+  date_end:"",
+  detail:"",
   chosenDate: new Date(),
 }
+const image = { uri: "https://wallpaperaccess.com/full/797185.png"};
+
 export default class AddNote extends Component<Props,State>{
-  state = initState
-  onchangeID = (e:string) =>{
+  state = initState;
+  module = new fetchAPI("/tasks")
+  componentDidMount(){
+    // fetch('http://192.168.1.7:5000/static/result/c57d97b8-5731-4e6c-9b4d-bb588c380164.jpg'{
+    //   method:"GET",
+    //   mode:"cors",
+    // })
+    fetch('192.168.1.7/',{
+      method:"GET",
+      mode:"cors",
+      credentials: "include",
+      headers:{
+        "Content-Type":"multipart/json"
+      }
+    })
+    .then((res:any)=>{console.log("AAAA",res.json())})
+    .catch((err:any)=>{console.log("ERR",err)})
+
+  }
+  onchangeName = (e:string) =>{
     this.setState({
-      id_input: e
+      name: e
     })
   }
-  onchangePws = (e:string) => {
+  onchangeTimeStart = (e:string) => {
     this.setState({
-      pws_input: e
+      time_start: e
+    })
+  }
+  onchangeTimeEnd = (e:string) => {
+    this.setState({
+      time_end: e
     })
   }
   onchangeTextArea = (e:string)=>{
     console.log("a")
     this.setState({
-      text:e
+      detail:e
     })
   }
   setDate = (e:any) => {
@@ -38,39 +67,42 @@ export default class AddNote extends Component<Props,State>{
       chosenDate:e
     })
   }
-  signIn = () =>{
-    console.log((this.state.id===this.state.id_input )&& (this.state.pws === this.state.pws_input))
-    // if(this.state.id === this.state.id_input && this.state.pws === this.state.pws_input){
-      // Toast.show({
-      //   text: "Sign In Successful",
-      //   buttonText: "Okay",
-      //   duration: 3000
-      // })
-      alert("Adding Successful")
-      screen__.goTo(this.props.navigation,screen__.MainFeature);
-    // }else{
-      // Toast.show({
-      //   text: "Wrong Input",
-      //   buttonText: "Okay",
-      //   duration: 3000,
-      //   position:"top",
-      // })
-      // alert("Sign In Fail, Wrong Input")
-    // }
+  setDate1 = (e:any) => {
+    this.setState({
+      chosenDate:e
+    })
+  }
+  click = () =>{
+    alert("Adding Successful")
+    screen__.goTo(this.props.navigation,screen__.MainFeature);
   }
   render(){
     return (
-            <Container>
-        <Content
+            <Container style={styles.container}>
+        <View
+        style={styles.container}
         >
-          <Form >
-            <Item floatingLabel style={styles.aligntCenter}>
-              <Label>Header</Label>
+          <ImageBackground source={image} style={styles.image}>
+            <Text style={{
+              fontSize:30,
+              color:"white",
+            }}>Add new Task</Text>
+            <Form >
+            <Item floatingLabel style={styles.item_input}>
+              <Label style={styles.text}>Name Task</Label>
               <Input 
-              value={this.state.id_input}
-              onChangeText={this.onchangeID}/>
+              style={styles.input}
+              value={this.state.name}
+              onChangeText={this.onchangeName}/>
             </Item>
-              <DatePicker
+            <Item floatingLabel style={styles.item_input}>
+              <Label style={styles.text}>Time Start</Label>
+              <Input 
+              style={styles.input}
+              value={this.state.time_start}
+              onChangeText={this.onchangeTimeStart}/>
+            </Item>
+            <DatePicker
             defaultDate={new Date(2018, 4, 4)}
             minimumDate={new Date(2018, 1, 1)}
             maximumDate={new Date(2018, 12, 31)}
@@ -79,41 +111,105 @@ export default class AddNote extends Component<Props,State>{
             modalTransparent={false}
             animationType={"fade"}
             androidMode={"default"}
-            placeHolderText="Select date"
-            textStyle={{ color: "green" }}
-            placeHolderTextStyle={{ color: "inherit" }}
+            placeHolderText="Select start date"
+            textStyle={{ color: "white" }}
+            placeHolderTextStyle={{ color: "white", fontSize:15, alignSelf:"center" }}
             onDateChange={this.setDate}
             disabled={false}
             />
-              <Textarea
-              rowSpan={5} 
-              bordered 
-              placeholder="Content"
-              value={this.state.text}
-              onChangeText={this.onchangeTextArea}
-              />
-            
-            <ListItem itemDivider>
-            </ListItem>
+
+            <Item floatingLabel style={styles.item_input}>
+              <Label style={styles.text}>Time End</Label>
+              <Input 
+              style={styles.input}
+              value={this.state.time_end}
+              onChangeText={this.onchangeTimeEnd}/>
+            </Item>
+            <DatePicker
+            defaultDate={new Date(2018, 4, 4)}
+            minimumDate={new Date(2018, 1, 1)}
+            maximumDate={new Date(2018, 12, 31)}
+            locale={"en"}
+            timeZoneOffsetInMinutes={undefined}
+            modalTransparent={false}
+            animationType={"fade"}
+            androidMode={"default"}
+            placeHolderText="Select end date"
+            textStyle={{ color: "white" }}
+            placeHolderTextStyle={{ color: "white", fontSize:15, alignSelf:"center" }}
+            onDateChange={this.setDate1}
+            disabled={false}
+            />
+            <Textarea
+            rowSpan={5} 
+            bordered 
+            placeholder="Detail"
+            value={this.state.detail}
+            placeholderTextColor="white"
+            onChangeText={this.onchangeTextArea}
+            style={{color:"white"}}
+            />
             <Button
-            style={styles.aligntCenter}
-            onPress={this.signIn}
-            // rounded
+            style={styles.button}
             large
             block
             bordered
-            primary
+            dark
+            rounded
+            onPress={this.click}
             >
-              <Text>Add New</Text>
+              <Text style={{color:"white"}}>Add New</Text>
             </Button>
           </Form>
-        </Content>
+          </ImageBackground>
+          
+        </View>
       </Container>
     );
   }
 }
 const styles = StyleSheet.create({
   aligntCenter:{
+    justifyContent:"center",
+    alignItems:"center",
+  },
+  image:{
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    alignItems:"center",
+  },
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    width:"100%",
+    backgroundColor:"rgba(0,0,0,.3)"
+  },
+  input:{
+    color:"white",
+    fontSize:15,
+    width:300,
+  },
+  form:{
+    width:300,
+    justifyContent:"center",
+    alignItems:"center",
+  },
+  button:{
+    marginTop:30,
+    borderColor:"white",
+    backgroundColor:"rgba(255,255,255,.5)"
+  },
+  text:{
+    color:"white",
+    fontSize:15,
+    alignSelf:"center",
+  },
+  text_button:{
+    fontSize:20,
+  },
+  item_input:{
+    width:300,
     justifyContent:"center",
     alignItems:"center",
   }
