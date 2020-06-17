@@ -12,3 +12,5 @@ web-report/
 server/venv/**/*
 # macOS
 .DS_Store
+venv
+_pycache_
